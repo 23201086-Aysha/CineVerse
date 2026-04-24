@@ -4,7 +4,8 @@ from django.shortcuts import render
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.contrib.auth import logout, authenticate, login
 
 
 # user registration view
@@ -38,5 +39,29 @@ def register_user(request):
         # render reg form for GET method
     return render(request, 'user/register_form.html')
 
+
+# login view
 def login_user(request):
-    return render(request, "user/login_form.html")
+    if request.method == "POST":
+        # get data from form
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        # if no user, return none
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        else:
+            # no login msg
+            messages.error(request, "Invalid credentials")
+            return render(request, "user/login_form.html")
+    else:
+        return render(request, "user/login_form.html")
+
+# logout view
+def logout_user(request):
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect('home')
+

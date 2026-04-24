@@ -71,10 +71,39 @@
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
       }
+
+      .flash-stack {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(92vw, 560px);
+        z-index: 1080;
+      }
     </style>
   </head>
   <body>
     <main class="page-shell d-flex align-items-center py-5">
+      {% if messages %}
+      <div class="flash-stack vstack gap-2">
+        {% for message in messages %}
+        <div
+          class="alert {% if 'error' in message.tags %}alert-danger{% elif 'success' in message.tags %}alert-success{% elif 'warning' in message.tags %}alert-warning{% else %}alert-info{% endif %} alert-dismissible fade show border-0 shadow-sm rounded-3 mb-0"
+          role="alert"
+        >
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <span class="small fw-semibold">{{ message }}</span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% block content %}{% endblock content %}
     </main>
 

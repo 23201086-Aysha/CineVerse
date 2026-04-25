@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
+from .models import CineUser
 
 
 # user registration view
@@ -50,6 +52,9 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            if user.is_superuser or user.is_staff:
+                messages.error(request, "Admin accounts must use the admin panel.")
+                return redirect("user:login_user")
             login(request, user)
             return redirect("home")
         else:
@@ -65,3 +70,13 @@ def logout_user(request):
     messages.success(request, "You have been logged out.")
     return redirect('home')
 
+
+# profile view
+@login_required
+def user_profile(request):
+    user = request.user
+    profile = CineUser.objects.get(user=user)
+    if request.user.is_authenticated:
+        return render(request, 'user/user_profile.html', {'profile': profile})
+    else:
+        return render(request, "user/login.html")

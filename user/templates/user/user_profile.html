@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block title %}
+CineVerse | {{ user.username }}
+{% endblock %}
+
+{% block content %}
+<style>
+  .cv-profile-wrap {
+    width: min(960px, 94vw);
+    margin: 2rem auto;
+  }
+
+  .cv-profile-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+
+  .cv-profile-hero {
+    position: relative;
+    padding: 2rem;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(13, 110, 253, 0.2), transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.16), transparent 35%),
+      linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+
+  .cv-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(248, 250, 252, 0.85);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  .cv-avatar-fallback {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border: 4px solid rgba(248, 250, 252, 0.85);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  .cv-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .cv-profile-body {
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .cv-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .cv-info-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.9rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .cv-info-label {
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+  }
+
+  .cv-info-value {
+    margin: 0.3rem 0 0;
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .cv-section {
+    margin-top: 1.25rem;
+  }
+
+  .cv-section-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1rem 1.1rem;
+  }
+
+  .cv-empty {
+    color: #64748b;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .cv-profile-hero {
+      padding: 1.4rem;
+    }
+
+    .cv-profile-body {
+      padding: 1.2rem;
+    }
+
+    .cv-info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="cv-profile-wrap">
+  <div class="cv-profile-card">
+    <section class="cv-profile-hero">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+        {% if profile.profile_pic %}
+          <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="cv-avatar" />
+        {% else %}
+          <div class="cv-avatar-fallback">{{ user.username|first|upper }}</div>
+        {% endif %}
+
+        <div class="flex-grow-1">
+          <span class="cv-chip mb-2">CineVerse Member</span>
+          <h1 class="h3 mb-1">
+            {% if user.first_name or user.last_name %}
+              {{ user.first_name }} {{ user.last_name }}
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </h1>
+          <p class="mb-0 opacity-75">@{{ user.username }}</p>
+        </div>
+
+        <div class="d-flex gap-2">
+          <a href="{% url 'home' %}" class="btn btn-light btn-sm">Home</a>
+          <a href="{% url 'user:logout_user' %}" class="btn btn-outline-light btn-sm">Logout</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cv-profile-body">
+      <div class="cv-info-grid">
+        <div class="cv-info-box">
+          <p class="cv-info-label">Phone</p>
+          <p class="cv-info-value">
+            {% if profile.user_phone %}
+              {{ profile.user_phone }}
+            {% else %}
+              Not added yet
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="cv-info-box">
+          <p class="cv-info-label">Joined</p>
+          <p class="cv-info-value">{{ profile.user_joined_on|date:"M d, Y" }}</p>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <h2 class="h5 mb-2">About Me</h2>
+        <div class="cv-section-card">
+          <p class="cv-empty">
+            This is your CineVerse profile space. Add edit-profile features here next (bio, favorite genres, watchlist stats).
+          </p>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <h2 class="h5 mb-2">My Activity</h2>
+        <div class="cv-section-card">
+          <p class="cv-empty">No activity yet. Start exploring movies to build your profile.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

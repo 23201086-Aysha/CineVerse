@@ -1,10 +1,5 @@
-{% extends 'base.html' %}
-
-{% block title %}
-CineVerse | {{ user.username }}
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %} CineVerse | {{ user.username }}
+{%endblock %} {% block content %}
 <style>
   .cv-profile-wrap {
     width: min(960px, 94vw);
@@ -23,8 +18,16 @@ CineVerse | {{ user.username }}
     position: relative;
     padding: 2rem;
     background:
-      radial-gradient(circle at 10% 20%, rgba(13, 110, 253, 0.2), transparent 35%),
-      radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.16), transparent 35%),
+      radial-gradient(
+        circle at 10% 20%,
+        rgba(13, 110, 253, 0.2),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(99, 102, 241, 0.16),
+        transparent 35%
+      ),
       linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: #f8fafc;
   }
@@ -106,6 +109,18 @@ CineVerse | {{ user.username }}
     padding: 1rem 1.1rem;
   }
 
+  .cv-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .cv-stat:last-child {
+    border-bottom: 0;
+  }
+
   .cv-empty {
     color: #64748b;
     margin: 0;
@@ -129,28 +144,38 @@ CineVerse | {{ user.username }}
 <div class="cv-profile-wrap">
   <div class="cv-profile-card">
     <section class="cv-profile-hero">
-      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+      <div
+        class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
+      >
         {% if profile.profile_pic %}
-          <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="cv-avatar" />
+        <img
+          src="{{ profile.profile_pic.url }}"
+          alt="Profile Picture"
+          class="cv-avatar"
+        />
         {% else %}
-          <div class="cv-avatar-fallback">{{ user.username|first|upper }}</div>
+        <div class="cv-avatar-fallback">{{ user.username|first|upper }}</div>
         {% endif %}
 
         <div class="flex-grow-1">
           <span class="cv-chip mb-2">CineVerse Member</span>
           <h1 class="h3 mb-1">
-            {% if user.first_name or user.last_name %}
-              {{ user.first_name }} {{ user.last_name }}
-            {% else %}
-              {{ user.username }}
-            {% endif %}
+            {% if user.first_name and user.last_name %} {{ user.first_name }}
+            {{user.last_name }} {% else %} {{ user.username }} {% endif %}
           </h1>
           <p class="mb-0 opacity-75">@{{ user.username }}</p>
         </div>
 
         <div class="d-flex gap-2">
+          <a href="{% url 'user:update_profile' %}" class="btn btn-light btn-sm"
+            >Edit Profile</a
+          >
           <a href="{% url 'home' %}" class="btn btn-light btn-sm">Home</a>
-          <a href="{% url 'user:logout_user' %}" class="btn btn-outline-light btn-sm">Logout</a>
+          <a
+            href="{% url 'user:logout_user' %}"
+            class="btn btn-outline-light btn-sm"
+            >Logout</a
+          >
         </div>
       </div>
     </section>
@@ -158,27 +183,14 @@ CineVerse | {{ user.username }}
     <section class="cv-profile-body">
       <div class="cv-info-grid">
         <div class="cv-info-box">
-          <p class="cv-info-label">Phone</p>
-          <p class="cv-info-value">
-            {% if profile.user_phone %}
-              {{ profile.user_phone }}
-            {% else %}
-              Not added yet
-            {% endif %}
-          </p>
+          <p class="cv-info-label">Email</p>
+          <p class="cv-info-value">{{ user.email|default:"Not added yet" }}</p>
         </div>
 
         <div class="cv-info-box">
           <p class="cv-info-label">Joined</p>
-          <p class="cv-info-value">{{ profile.user_joined_on|date:"M d, Y" }}</p>
-        </div>
-      </div>
-
-      <div class="cv-section">
-        <h2 class="h5 mb-2">About Me</h2>
-        <div class="cv-section-card">
-          <p class="cv-empty">
-            This is your CineVerse profile space. Add edit-profile features here next (bio, favorite genres, watchlist stats).
+          <p class="cv-info-value">
+            {{ profile.user_joined_on|date:"M d, Y" }}
           </p>
         </div>
       </div>
@@ -186,7 +198,9 @@ CineVerse | {{ user.username }}
       <div class="cv-section">
         <h2 class="h5 mb-2">My Activity</h2>
         <div class="cv-section-card">
-          <p class="cv-empty">No activity yet. Start exploring movies to build your profile.</p>
+          <p class="cv-empty">
+            No activity yet. Start exploring movies to build your profile.
+          </p>
         </div>
       </div>
     </section>

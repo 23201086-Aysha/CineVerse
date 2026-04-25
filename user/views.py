@@ -1,10 +1,6 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import CineUser
@@ -74,9 +70,39 @@ def logout_user(request):
 # profile view
 @login_required
 def user_profile(request):
+    profile, _ = CineUser.objects.get_or_create(user=request.user)
+    return render(request, 'user/user_profile.html', {'profile': profile})
+
+# update profile
+@login_required
+def update_user(request):
     user = request.user
-    profile = CineUser.objects.get(user=user)
-    if request.user.is_authenticated:
-        return render(request, 'user/user_profile.html', {'profile': profile})
-    else:
-        return render(request, "user/login.html")
+    profile, _ = CineUser.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+
+        if not username:
+            messages.error(request, 'Username is required.')
+            return redirect('user:update_profile')
+
+        if User.objects.exclude(pk=user.pk).filter(username=username).exists():
+            messages.error(request, 'Username already taken.')
+            return redirect('user:update_profile')
+
+        user.username = username
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('user:user_profile')
+
+    return render(request, 'user/update_profile.html', {
+        'user': user,
+        'profile': profile
+    })

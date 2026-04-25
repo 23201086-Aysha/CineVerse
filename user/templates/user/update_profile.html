@@ -1,0 +1,166 @@
+{% extends 'base.html' %} {% block title %} CineVerse | Update Profile {%endblock %} {% block content %}
+<style>
+  .cv-profile-wrap {
+    width: min(960px, 94vw);
+    margin: 2rem auto;
+  }
+
+  .cv-profile-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+
+  .cv-profile-hero {
+    padding: 2rem;
+    background:
+      radial-gradient(
+        circle at 10% 20%,
+        rgba(13, 110, 253, 0.2),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(99, 102, 241, 0.16),
+        transparent 35%
+      ),
+      linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+
+  .cv-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .cv-profile-body {
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .cv-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .cv-full {
+    grid-column: 1 / -1;
+  }
+
+  .cv-label {
+    color: #475569;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .cv-actions {
+    margin-top: 1.2rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .cv-profile-hero {
+      padding: 1.4rem;
+    }
+
+    .cv-profile-body {
+      padding: 1.2rem;
+    }
+
+    .cv-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="cv-profile-wrap">
+  <div class="cv-profile-card">
+    <section class="cv-profile-hero">
+      <span class="cv-chip mb-2">CineVerse Account</span>
+      <h1 class="h3 mb-1">Update Profile</h1>
+      <p class="mb-0 opacity-75">
+        Keep your account details fresh and accurate.
+      </p>
+    </section>
+
+    <section class="cv-profile-body">
+      <form method="POST" action="{% url 'user:update_profile' %}">
+        {% csrf_token %}
+
+        <div class="cv-form-grid">
+          <div>
+            <label class="cv-label" for="username">Username</label>
+            <input
+              type="text"
+              value="{{ user.username }}"
+              class="form-control"
+              name="username"
+              id="username"
+              placeholder="Username"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="cv-label" for="email">Email</label>
+            <input
+              type="email"
+              value="{{ user.email }}"
+              class="form-control"
+              name="email"
+              id="email"
+              placeholder="Email address"
+            />
+          </div>
+
+          <div>
+            <label class="cv-label" for="first_name">First Name</label>
+            <input
+              type="text"
+              value="{{ user.first_name }}"
+              class="form-control"
+              name="first_name"
+              id="first_name"
+              placeholder="First name"
+            />
+          </div>
+
+          <div>
+            <label class="cv-label" for="last_name">Last Name</label>
+            <input
+              type="text"
+              value="{{ user.last_name }}"
+              class="form-control"
+              name="last_name"
+              id="last_name"
+              placeholder="Last name"
+            />
+          </div>
+        </div>
+
+        <div class="cv-actions">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <a
+            href="{% url 'user:user_profile' %}"
+            class="btn btn-outline-secondary"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+{% endblock %}

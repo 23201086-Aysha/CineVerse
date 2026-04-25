@@ -1,0 +1,19 @@
+<h2>Add Movie</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="Title"><br>
+
+    <textarea name="description"></textarea><br>
+
+    <input type="date" name="release_date"><br>
+
+    <select name="genre">
+        {% for g in genres %}
+            <option value="{{ g.id }}">{{ g.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Save</button>
+</form>

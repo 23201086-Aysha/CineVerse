@@ -1,0 +1,15 @@
+<h2>Movie List</h2>
+
+<a href="/add/">Add Movie</a>
+
+<ul>
+{% for movie in movies %}
+    <li>
+        <a href="/movie/{{ movie.id }}/">{{ movie.title }}</a>
+        ({{ movie.genre.name }})
+
+        | <a href="/edit/{{ movie.id }}/">Edit</a>
+        | <a href="/delete/{{ movie.id }}/">Delete</a>
+    </li>
+{% endfor %}
+</ul>

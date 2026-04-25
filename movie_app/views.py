@@ -1,3 +1,48 @@
 from django.shortcuts import render
 
 # Create your views here.
+from .models import Movie, Genre
+
+
+# Add
+def add_movie(request):
+    genres = Genre.objects.all()
+
+    if request.method == "POST":
+        Movie.objects.create(
+            title=request.POST.get('title'),
+            description=request.POST.get('description'),
+            release_date=request.POST.get('release_date'),
+            genre_id=request.POST.get('genre')
+        )
+        return redirect('movie_list')
+
+    return render(request, 'movie/add_movie.html', {'genres': genres})
+
+
+# Edit
+def edit_movie(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+    genres = Genre.objects.all()
+
+    if request.method == "POST":
+        movie.title = request.POST.get('title')
+        movie.description = request.POST.get('description')
+        movie.release_date = request.POST.get('release_date')
+        movie.genre_id = request.POST.get('genre')
+        movie.save()
+
+        return redirect('movie_detail', pk=movie.pk)
+
+    return render(request, 'movie/edit_movie.html', {'movie': movie, 'genres': genres})
+
+
+# Delete
+def delete_movie(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+
+    if request.method == "POST":
+        movie.delete()
+        return redirect('movie_list')
+
+    return render(request, 'movie/delete_movie.html', {'movie': movie})

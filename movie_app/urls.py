@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 from django.shortcuts import redirect
 from . import views
-
+from.import views
 urlpatterns = [
-    path("register", lambda request: redirect("user/register/")),
-    path("", views.home, name="home"),
-    path("home/", lambda request: redirect("home")),
-    path('admin/', admin.site.urls),
-    path('user/', include('user.urls')),
-     path('', include('movie_app.urls')),
+    path('', views.movie_list, name='movie_list'),
+    path('movie/<int:pk>/', views.movie_detail, name='movie_detail'),
+    path('add/', views.add_movie, name='add_movie'),
+    path('edit/<int:pk>/', views.edit_movie, name='edit_movie'),
+    path('delete/<int:pk>/', views.delete_movie, name='delete_movie'),
 ]
+
+

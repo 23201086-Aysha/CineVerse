@@ -25,5 +25,5 @@ urlpatterns = [
     path("home/", lambda request: redirect("home")),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
-     path('', include('movie_app.urls')),
+     path('movie', include('movie_app.urls')),
 ]

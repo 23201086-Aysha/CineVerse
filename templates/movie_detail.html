@@ -1,7 +1,7 @@
 <h2>{{ movie.title }}</h2>
 
-<p>{{ movie.description }}</p>
-<p>Genre: {{ movie.genre.name }}</p>
-<p>Date: {{ movie.release_date }}</p>
+<p>{{ movie.description|default:"No description available" }}</p>
+<p>Genre: {{ movie.genre.name|default:"No Genre" }}</p>
+<p>Date: {{ movie.release_date|default:"No Date" }}</p>
 
-<a href="/">Back</a>
+<a href="{% url 'movie_list' %}">Back</a>

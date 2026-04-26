@@ -3,15 +3,16 @@
 <form method="POST">
     {% csrf_token %}
 
-    <input type="text" name="title" value="{{ movie.title }}"><br>
+    <input type="text" name="title" value="{{ movie.title|default:'' }}"><br>
 
-    <textarea name="description">{{ movie.description }}</textarea><br>
+    <textarea name="description">{{ movie.description|default:'' }}</textarea><br>
 
-    <input type="date" name="release_date" value="{{ movie.release_date }}"><br>
+    <input type="date" name="release_date" value="{{ movie.release_date|date:'Y-m-d' }}"><br>
 
     <select name="genre">
         {% for g in genres %}
-            <option value="{{ g.id }}" {% if g.id == movie.genre.id %}selected{% endif %}>
+            <option value="{{ g.id }}"
+                {% if movie.genre and g.id == movie.genre.id %}selected{% endif %}>
                 {{ g.name }}
             </option>
         {% endfor %}
@@ -19,3 +20,5 @@
 
     <button type="submit">Update</button>
 </form>
+
+<a href="{% url 'movie_list' %}">Back</a>

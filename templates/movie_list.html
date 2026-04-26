@@ -1,15 +1,17 @@
 <h2>Movie List</h2>
 
-<a href="/add/">Add Movie</a>
+<a href="{% url 'movie_add' %}">Add Movie</a>
 
 <ul>
 {% for movie in movies %}
     <li>
-        <a href="/movie/{{ movie.id }}/">{{ movie.title }}</a>
-        ({{ movie.genre.name }})
+        <a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a>
+        ({{ movie.genre.name|default:"No Genre" }})
 
-        | <a href="/edit/{{ movie.id }}/">Edit</a>
-        | <a href="/delete/{{ movie.id }}/">Delete</a>
+        | <a href="{% url 'movie_edit' movie.id %}">Edit</a>
+        | <a href="{% url 'movie_delete' movie.id %}">Delete</a>
     </li>
+{% empty %}
+    <li>No movies available.</li>
 {% endfor %}
 </ul>

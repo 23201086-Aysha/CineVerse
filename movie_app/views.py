@@ -1,16 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Movie, Genre
 
-# List
-def movie_list(request):
-    movies = Movie.objects.all()
-    return render(request, 'movie/movie_list.html', {'movies': movies})
-
-
-# Detail
-def movie_detail(request, pk):
-    movie = get_object_or_404(Movie, pk=pk)
-    return render(request, 'movie/movie_detail.html', {'movie': movie})
 
 # Add Movie
 def add_movie(request):
@@ -64,3 +54,13 @@ def delete_movie(request, pk):
 
     return render(request, 'movie/delete_movie.html', {'movie': movie})
 
+# List
+def movie_list(request):
+    movies = Movie.objects.all()
+    return render(request, 'movie/movie_list.html', {'movies': movies})
+
+
+# Detail
+def movie_detail(request, pk):
+    movie = get_object_or_404(Movie, pk=pk)
+    return render(request, 'movie/movie_detail.html', {'movie': movie})

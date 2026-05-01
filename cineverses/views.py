@@ -1,8 +1,6 @@
 from django.shortcuts import redirect, render
+from movie_app.models import Movie
 
-
-# def home(request):
-#     if request.user.is_authenticated:
-#         return render(request, "home.html")
-#     else:
-#         return redirect("user:login_user")
+def home(request):
+    movies = Movie.objects.all()
+    return render(request, "home.html",{"movies": movies})

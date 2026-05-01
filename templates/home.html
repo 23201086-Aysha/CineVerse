@@ -2,21 +2,47 @@
 {%block content %}
 
 <div class="container px-3">
-  <div class="auth-card mx-auto p-4 p-md-5">
-    <div class="text-center mb-4">
-      <h1 class="h3 mb-2">Home Page</h1>
-      
-      <form
+  <div class="text-center mb-4">
+    <h1 class="h3 mb-4">Welcome to CineVerse</h1>
+    <p class="text-muted">Discover and explore amazing movies</p>
+  </div>
+
+  <div class="row g-4">
+    {% for movie in movies %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.title }}</h5>
+          <p class="card-text text-muted">{{ movie.description|truncatechars:100 }}</p>
+          <p class="card-text"><small class="text-muted">Genre: {{ movie.genre.name }}</small></p>
+          <a href="{% url 'movie_app:movie_detail' movie.pk %}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+      <p class="text-muted">No movies available yet.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="text-center mt-4">
+    <form
       method="POST"
       action="{% url 'user:logout_user' %}"
-      class="vstack gap-3"
+      class="d-inline"
     >
       {% csrf_token %}
-
-      <button type="submit" class="btn btn-primary btn-lg w-100">Logout</button>
-      </form>
-    </div>
+      <button type="submit" class="btn btn-outline-primary">Logout</button>
+    </form>
   </div>
+  {% else %}
+  <div class="text-center mt-4">
+    <a href="{% url 'user:register_user' %}" class="btn btn-primary me-2">Register</a>
+    <a href="{% url 'user:login_user' %}" class="btn btn-outline-primary">Login</a>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}

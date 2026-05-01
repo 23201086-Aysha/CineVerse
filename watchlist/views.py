@@ -13,6 +13,8 @@ def add_to_watchlist(request):
         Watchlist.objects.get_or_create(user=user, movie_title=movie_title, movie_image=movie_image)
 
         return redirect('watchlist_view')  # Watchlist page-e niye jabe
+    else:
+        return redirect ('movie_list')
 
 
 @login_required

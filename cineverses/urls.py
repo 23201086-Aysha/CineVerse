@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.shortcuts import redirect
-from . import viewsinc
+from . import views
 
 
 urlpatterns=[
     path("home/", lambda request: redirect("home")),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
-     path('movie', include('movie_app.urls')),
+    path('movie/', include('movie_app.urls')),
+    path('review/', include('review.urls')),
+    path('watchlist/', include('watchlist.urls'))
 ]

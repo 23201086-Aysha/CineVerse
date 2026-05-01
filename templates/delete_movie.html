@@ -1,12 +1,56 @@
-<h2>Delete Movie?</h2>
+{% extends 'base.html' %}
 
-<p>Are you sure you want to delete "<strong>{{ movie.title }}</strong>"?</p>
+{% block title %}Delete Movie - CineVerse{% endblock %}
 
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-</form>
+{% block content %}
+<div class="container py-5">
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-5">
+    <div>
+      <a href="{% url 'movie_app:movie_list' %}" class="text-decoration-none text-muted small mb-3 d-inline-block">
+        ← Back to Movies
+      </a>
+      <h1 class="mb-2">Delete Movie</h1>
+    </div>
+  </section>
 
-<br>
+  <!-- MAIN CONTENT AREA - Confirmation Section -->
+  <section class="confirmation-container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm rounded-3 p-5 border-danger border-2">
+          <!-- WARNING ICON -->
+          <div class="text-center mb-4">
+            <div class="display-1 text-danger mb-3">⚠️</div>
+            <h4 class="text-dark">Confirm Deletion</h4>
+          </div>
 
-<a href="{% url 'movie_list' %}">Cancel</a>
+          <!-- CONFIRMATION MESSAGE -->
+          <div class="mb-5 text-center">
+            <p class="text-muted mb-2">You are about to delete:</p>
+            <h5 class="text-dark fw-bold mb-4">
+              "{{ movie.title }}"
+            </h5>
+            <p class="text-danger small">
+              <strong>This action cannot be undone.</strong>
+            </p>
+          </div>
+
+          <!-- FORM ACTIONS -->
+          <form method="POST" action="{% url 'movie_app:delete_movie' movie.pk %}">
+            {% csrf_token %}
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-danger btn-lg rounded-2">
+                Yes, Delete This Movie
+              </button>
+              <a href="{% url 'movie_app:movie_list' %}" class="btn btn-outline-secondary btn-lg rounded-2">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

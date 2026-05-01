@@ -1,27 +1,98 @@
-<h2>Add Movie</h2>
+{% extends 'base.html' %}
 
-<form method="POST">
-    {% csrf_token %}
+{% block title %}Add Movie - CineVerse{% endblock %}
 
-    <label>Title:</label><br>
-    <input type="text" name="title" placeholder="Title" required><br><br>
+{% block content %}
+<div class="container py-5">
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-5">
+    <div>
+      <a href="{% url 'movie_app:movie_list' %}" class="text-decoration-none text-muted small mb-3 d-inline-block">
+        ← Back to Movies
+      </a>
+      <h1 class="mb-2">Add New Movie</h1>
+      <p class="text-muted">Fill in the details to add a movie to your collection</p>
+    </div>
+  </section>
 
-    <label>Description:</label><br>
-    <textarea name="description" placeholder="Description"></textarea><br><br>
+  <!-- MAIN CONTENT AREA - Form Section -->
+  <section class="form-container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-3 p-5">
+          <!-- FORM -->
+          <form method="POST" novalidate>
+            {% csrf_token %}
 
-    <label>Release Date:</label><br>
-    <input type="date" name="release_date"><br><br>
+            <!-- Title Field -->
+            <div class="mb-4">
+              <label for="titleInput" class="form-label fw-semibold">Movie Title</label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg rounded-2" 
+                id="titleInput"
+                name="title" 
+                placeholder="Enter movie title"
+                required
+              >
+              <small class="text-muted">Required field</small>
+            </div>
 
-    <label>Genre:</label><br>
-    <select name="genre" required>
-        <option value="">-- Select Genre --</option>
-        {% for g in genres %}
-            <option value="{{ g.id }}">{{ g.name }}</option>
-        {% endfor %}
-    </select><br><br>
+            <!-- Description Field -->
+            <div class="mb-4">
+              <label for="descriptionInput" class="form-label fw-semibold">Description</label>
+              <textarea 
+                class="form-control rounded-2" 
+                id="descriptionInput"
+                name="description" 
+                rows="4"
+                placeholder="Enter a brief description of the movie"
+              ></textarea>
+              <small class="text-muted">Optional - describe the movie's plot</small>
+            </div>
 
-    <button type="submit">Save</button>
-</form>
+            <!-- Release Date Field -->
+            <div class="mb-4">
+              <label for="releaseInput" class="form-label fw-semibold">Release Date</label>
+              <input 
+                type="date" 
+                class="form-control form-control-lg rounded-2" 
+                id="releaseInput"
+                name="release_date"
+              >
+              <small class="text-muted">Optional</small>
+            </div>
 
-<br>
-<a href="{% url 'movie_list' %}">Back</a>
+            <!-- Genre Field -->
+            <div class="mb-5">
+              <label for="genreSelect" class="form-label fw-semibold">Genre</label>
+              <select 
+                class="form-select form-select-lg rounded-2" 
+                id="genreSelect"
+                name="genre"
+                required
+              >
+                <option value="">-- Select a Genre --</option>
+                {% for g in genres %}
+                  <option value="{{ g.id }}">{{ g.name }}</option>
+                {% endfor %}
+              </select>
+              <small class="text-muted">Required field</small>
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg rounded-2">
+                Save Movie
+              </button>
+              <a href="{% url 'movie_app:movie_list' %}" class="btn btn-outline-secondary btn-lg rounded-2">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

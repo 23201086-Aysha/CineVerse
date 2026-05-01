@@ -16,17 +16,19 @@ Including another URLconf
 """
 
 from django.urls import  path
+from django.shortcuts import redirect
 from . import views
 
 
 app_name  = 'movie_app'
 
 urlpatterns = [
-    path('', views.movie_list, name='movie_list'),
-    path('movie/<int:pk>/', views.movie_detail, name='movie_detail'),
-    path('add/', views.add_movie, name='add_movie'),
-    path('edit/<int:pk>/', views.edit_movie, name='edit_movie'),
-    path('delete/<int:pk>/', views.delete_movie, name='delete_movie'),
+    path('movie_list/', views.movie_list, name='movie_list'),
+    path('', lambda request: redirect('movie_app:movie_list')),
+    path('movie_detail/<int:pk>/', views.movie_detail, name='movie_detail'),
+    path('add_movie/', views.add_movie, name='add_movie'),
+    path('edit_movie/<int:pk>/', views.edit_movie, name='edit_movie'),
+    path('delete_movie/<int:pk>/', views.delete_movie, name='delete_movie'),
 ]
 
 

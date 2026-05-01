@@ -21,7 +21,8 @@ from . import views
 
 
 urlpatterns=[
-    path("home/", lambda request: redirect("home")),
+    path('', lambda request: redirect('home')),
+    path("home/", lambda request: redirect('movie_app:movie_list'), name="home"),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('movie/', include('movie_app.urls')),

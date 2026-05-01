@@ -1,7 +1,86 @@
-<h2>{{ movie.title }}</h2>
+{% extends 'base.html' %}
 
-<p>{{ movie.description|default:"No description available" }}</p>
-<p>Genre: {{ movie.genre.name|default:"No Genre" }}</p>
-<p>Date: {{ movie.release_date|default:"No Date" }}</p>
+{% block title %}{{ movie.title }} - CineVerse{% endblock %}
 
-<a href="{% url 'movie_list' %}">Back</a>
+{% block content %}
+<div class="container py-5">
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-5">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <a href="{% url 'movie_app:movie_list' %}" class="text-decoration-none text-muted small mb-3 d-inline-block">
+          ← Back to Movies
+        </a>
+        <h1 class="mb-2">{{ movie.title }}</h1>
+      </div>
+      {% if user.is_authenticated %}
+      <div class="btn-group" role="group">
+        <a href="{% url 'movie_app:edit_movie' movie.id %}" class="btn btn-outline-secondary">
+          Edit
+        </a>
+        <a href="{% url 'movie_app:delete_movie' movie.id %}" class="btn btn-outline-danger">
+          Delete
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT AREA - Movie Details -->
+  <section class="movie-details">
+    <div class="row g-4">
+      <!-- MAIN INFO -->
+      <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-3 p-4">
+          <!-- DESCRIPTION -->
+          <div class="mb-5">
+            <h5 class="mb-3 text-dark">Description</h5>
+            <p class="text-muted lh-lg">
+              {{ movie.description|default:"No description available" }}
+            </p>
+          </div>
+
+          <!-- METADATA -->
+          <div class="row g-4">
+            <div class="col-sm-6">
+              <div>
+                <label class="text-muted small fw-semibold d-block mb-2">Genre</label>
+                <span class="badge bg-primary fs-6">
+                  {{ movie.genre.name|default:"No Genre" }}
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div>
+                <label class="text-muted small fw-semibold d-block mb-2">Release Date</label>
+                <p class="mb-0">
+                  {% if movie.release_date %}
+                    {{ movie.release_date|date:'F j, Y' }}
+                  {% else %}
+                    <span class="text-muted">No date available</span>
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-3 p-4">
+          <h5 class="mb-4">Quick Actions</h5>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" onclick="alert('Watchlist feature coming soon')">
+              Add to Watchlist
+            </button>
+            <button class="btn btn-outline-secondary" onclick="alert('Share feature coming soon')">
+              Share Movie
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

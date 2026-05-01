@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Movie, Genre
+from django.contrib.auth.decorators import login_required
 
 # List
+@login_required
 def movie_list(request):
     movies = Movie.objects.all()
-    return render(request, 'movie/movie_list.html', {'movies': movies})
+    return render(request, 'movie_list.html', {'movies': movies})
 
 
 # Detail
+@login_required
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
-    return render(request, 'movie/movie_detail.html', {'movie': movie})
+    return render(request, 'movie_detail.html', {'movie': movie})
 
 # Add Movie
+@login_required
 def add_movie(request):
     genres = Genre.objects.all()
 
@@ -29,12 +33,13 @@ def add_movie(request):
                 release_date=release_date,
                 genre_id=genre_id
             )
-            return redirect('movie_list')
+            return redirect('movie_app:movie_list')
 
-    return render(request, 'movie/add_movie.html', {'genres': genres})
+    return render(request, 'add_movie.html', {'genres': genres})
 
 
 # Edit Movie
+@login_required
 def edit_movie(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     genres = Genre.objects.all()
@@ -48,19 +53,20 @@ def edit_movie(request, pk):
         movie.save()
         return redirect('movie_detail', pk=movie.pk)
 
-    return render(request, 'movie/edit_movie.html', {
+    return render(request, 'edit_movie.html', {
         'movie': movie,
         'genres': genres
     })
 
 
 # Delete Movie
+@login_required
 def delete_movie(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
 
     if request.method == "POST":
         movie.delete()
-        return redirect('movie_list')
+        return redirect('movie_app:movie_list')
 
-    return render(request, 'movie/delete_movie.html', {'movie': movie})
+    return render(request, 'delete_movie.html', {'movie': movie})
 

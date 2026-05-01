@@ -1,0 +1,93 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom" style="border-color: var(--cv-border) !important;">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold" href="{% url 'movie_app:movie_list' %}">
+      <span style="color: #0d6efd;">CineVerse</span>
+    </a>
+
+    <!-- Toggle button for mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+          
+          <!-- For logged-in users -->
+          {% if user.is_authenticated %}
+          <!-- Movies link for all users -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'movie_app:movie_list' %}">
+              Movies
+            </a>
+          </li>
+          <!-- Add Movie -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'movie_app:add_movie' %}">
+              Add Movie
+            </a>
+          </li>
+
+          <!-- Profile dropdown -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="profileDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              <li>
+                <a class="dropdown-item" href="{% url 'user:user_profile' %}">
+                  Profile
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'user:update_profile' %}">
+                  Update Profile
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'user:logout_user' %}">
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        <!-- For logged-out users -->
+        {% else %}
+          <!-- Login button -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user:login_user' %}">
+              Login
+            </a>
+          </li>
+
+          <!-- Register button -->
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'user:register_user' %}">
+              Register
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

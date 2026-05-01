@@ -1,24 +1,99 @@
-<h2>Edit Movie</h2>
+{% extends 'base.html' %}
 
-<form method="POST">
-    {% csrf_token %}
+{% block title %}Edit Movie - CineVerse{% endblock %}
 
-    <input type="text" name="title" value="{{ movie.title|default:'' }}"><br>
+{% block content %}
+<div class="container py-5">
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-5">
+    <div>
+      <a href="{% url 'movie_app:movie_list' %}" class="text-decoration-none text-muted small mb-3 d-inline-block">
+        ← Back to Movies
+      </a>
+      <h1 class="mb-2">Edit Movie</h1>
+      <p class="text-muted">Update the movie details</p>
+    </div>
+  </section>
 
-    <textarea name="description">{{ movie.description|default:'' }}</textarea><br>
+  <!-- MAIN CONTENT AREA - Form Section -->
+  <section class="form-container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-3 p-5">
+          <!-- FORM -->
+          <form method="POST" novalidate>
+            {% csrf_token %}
 
-    <input type="date" name="release_date" value="{{ movie.release_date|date:'Y-m-d' }}"><br>
+            <!-- Title Field -->
+            <div class="mb-4">
+              <label for="titleInput" class="form-label fw-semibold">Movie Title</label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg rounded-2" 
+                id="titleInput"
+                name="title" 
+                value="{{ movie.title|default:'' }}"
+                placeholder="Enter movie title"
+                required
+              >
+            </div>
 
-    <select name="genre">
-        {% for g in genres %}
-            <option value="{{ g.id }}"
-                {% if movie.genre and g.id == movie.genre.id %}selected{% endif %}>
-                {{ g.name }}
-            </option>
-        {% endfor %}
-    </select><br><br>
+            <!-- Description Field -->
+            <div class="mb-4">
+              <label for="descriptionInput" class="form-label fw-semibold">Description</label>
+              <textarea 
+                class="form-control rounded-2" 
+                id="descriptionInput"
+                name="description" 
+                rows="4"
+                placeholder="Enter a brief description of the movie"
+              >{{ movie.description|default:'' }}</textarea>
+            </div>
 
-    <button type="submit">Update</button>
-</form>
+            <!-- Release Date Field -->
+            <div class="mb-4">
+              <label for="releaseInput" class="form-label fw-semibold">Release Date</label>
+              <input 
+                type="date" 
+                class="form-control form-control-lg rounded-2" 
+                id="releaseInput"
+                name="release_date"
+                value="{{ movie.release_date|date:'Y-m-d' }}"
+              >
+            </div>
 
-<a href="{% url 'movie_list' %}">Back</a>
+            <!-- Genre Field -->
+            <div class="mb-5">
+              <label for="genreSelect" class="form-label fw-semibold">Genre</label>
+              <select 
+                class="form-select form-select-lg rounded-2" 
+                id="genreSelect"
+                name="genre"
+              >
+                {% for g in genres %}
+                  <option 
+                    value="{{ g.id }}"
+                    {% if movie.genre and g.id == movie.genre.id %}selected{% endif %}
+                  >
+                    {{ g.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg rounded-2">
+                Update Movie
+              </button>
+              <a href="{% url 'movie_app:movie_list' %}" class="btn btn-outline-secondary btn-lg rounded-2">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'watchlist',
     'movie_app',
     'review',
+    'subscription',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

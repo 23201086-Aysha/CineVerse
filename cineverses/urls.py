@@ -26,5 +26,6 @@ urlpatterns=[
     path('user/', include('user.urls')),
     path('movie/', include('movie_app.urls')),
     path('review/', include('review.urls')),
-    path('watchlist/', include('watchlist.urls'))
+    path('watchlist/', include('watchlist.urls')),
+    path('subscription/', include('subscription.urls'))
 ]

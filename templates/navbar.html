@@ -36,6 +36,44 @@
               Add Movie
             </a>
           </li>
+ <!-- Home -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'movie_app:home' %}">
+      Home
+    </a>
+  </li>
+
+  <!-- Genres -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+      Genres
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="{% url 'movie_app:genre_list' %}">All Genres</a></li>
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Comedy</a></li>
+      <li><a class="dropdown-item" href="#">Romance</a></li>
+      <li><a class="dropdown-item" href="#">Horror</a></li>
+      <li><a class="dropdown-item" href="#">Thrille</a></li>
+      <li><a class="dropdown-item" href="#">Adventure</a></li>
+    </ul>
+  </li>
+
+  <!-- Reviews -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+      Reviews
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="{% url 'movie_app:all_reviews' %}">All Reviews</a></li>
+      {% if user.is_authenticated %}
+    <li><a class="dropdown-item" href="{% url 'movie_app:my_reviews' %}">My Reviews</a></li>
+    <li><a class="dropdown-item" href="{% url 'movie_app:add_review' %}">Add Review</a></li>
+    {% endif %}
+
+    <li><a class="dropdown-item" href="{% url 'movie_app:top_reviews' %}">Top Rated</a></li>
+    </ul>
+  </li>
 
           <!-- Profile dropdown -->
           <li class="nav-item dropdown">

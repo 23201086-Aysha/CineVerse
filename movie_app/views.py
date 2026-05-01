@@ -1,21 +1,30 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Movie, Genre
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from .models import Movie, Genre
+from review.models import Review
 
-# List
+
+# 🔹 Home
+@login_required
+def home(request):
+    return redirect('movie_app:movie_list')
+
+
+# 🔹 Movie List
 @login_required
 def movie_list(request):
     movies = Movie.objects.all()
     return render(request, 'movie_list.html', {'movies': movies})
 
 
-# Detail
+# 🔹 Movie Detail
 @login_required
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     return render(request, 'movie_detail.html', {'movie': movie})
 
-# Add Movie
+
+# 🔹 Add Movie
 @login_required
 def add_movie(request):
     genres = Genre.objects.all()
@@ -38,7 +47,7 @@ def add_movie(request):
     return render(request, 'add_movie.html', {'genres': genres})
 
 
-# Edit Movie
+# 🔹 Edit Movie
 @login_required
 def edit_movie(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
@@ -51,7 +60,7 @@ def edit_movie(request, pk):
         movie.genre_id = request.POST.get('genre')
 
         movie.save()
-        return redirect('movie_detail', pk=movie.pk)
+        return redirect('movie_app:movie_detail', pk=movie.pk)
 
     return render(request, 'edit_movie.html', {
         'movie': movie,
@@ -59,7 +68,7 @@ def edit_movie(request, pk):
     })
 
 
-# Delete Movie
+# 🔹 Delete Movie
 @login_required
 def delete_movie(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
@@ -70,3 +79,52 @@ def delete_movie(request, pk):
 
     return render(request, 'delete_movie.html', {'movie': movie})
 
+
+# 🔹 Genre List
+@login_required
+def genre_list(request):
+    genres = Genre.objects.all()
+    return render(request, 'genre_list.html', {'genres': genres})
+
+
+# 🔹 All Reviews
+@login_required
+def all_reviews(request):
+    reviews = Review.objects.all()
+    return render(request, 'all_reviews.html', {'reviews': reviews})
+
+
+# 🔹 My Reviews
+@login_required
+def my_reviews(request):
+    reviews = Review.objects.filter(user=request.user)
+    return render(request, 'my_reviews.html', {'reviews': reviews})
+
+
+# 🔹 Add Review
+@login_required
+def add_review(request):
+    movies = Movie.objects.all()
+
+    if request.method == "POST":
+        movie_id = request.POST.get('movie')
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+
+        if movie_id and rating:
+            Review.objects.create(
+                user=request.user,
+                movie_id=movie_id,
+                rating=rating,
+                comment=comment
+            )
+            return redirect('movie_app:all_reviews')
+
+    return render(request, 'add_review.html', {'movies': movies})
+
+
+# 🔹 Top Reviews
+@login_required
+def top_reviews(request):
+    reviews = Review.objects.order_by('-rating')[:10]
+    return render(request, 'top_reviews.html', {'reviews': reviews})

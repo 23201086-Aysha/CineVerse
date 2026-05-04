@@ -81,6 +81,47 @@
         </div>
       </div>
     </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-3 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h5 class="mb-1 text-dark">Reviews</h5>
+              <p class="text-muted small mb-0">
+                {% if reviews %}
+                  {{ reviews|length }} review{% if reviews|length != 1 %}s{% endif %} for this movie
+                {% else %}
+                  No reviews yet for this movie
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          {% if reviews %}
+          <div class="list-group list-group-flush">
+            {% for review in reviews %}
+            <div class="list-group-item px-0 py-3 border-bottom">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <strong>{{ review.user.username }}</strong>
+                  <p class="text-muted small mb-0">{{ review.created_at|date:'M d, Y' }}</p>
+                </div>
+                <span class="badge bg-secondary">{{ review.rating }}/10</span>
+              </div>
+              {% if review.is_spoiler %}
+              <p class="mb-2 text-warning small">Contains spoilers</p>
+              {% endif %}
+              <p class="text-muted mb-0">
+                {{ review.comment|default:'No comment provided' }}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 {% endblock %}

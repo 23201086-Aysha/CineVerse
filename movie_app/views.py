@@ -21,7 +21,11 @@ def movie_list(request):
 @login_required
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
-    return render(request, 'movie_detail.html', {'movie': movie})
+    reviews = Review.objects.filter(movie=movie).order_by('-created_at')
+    return render(request, 'movie_detail.html', {
+        'movie': movie,
+        'reviews': reviews
+    })
 
 
 # 🔹 Add Movie

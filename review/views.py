@@ -8,7 +8,7 @@ def movie_reviews(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     reviews = Review.objects.filter(movie=movie)
 
-    return render(request, 'reviews/movie_reviews.html', {
+    return render(request, 'review.html', {
         'movie': movie,
         'reviews': reviews
     })

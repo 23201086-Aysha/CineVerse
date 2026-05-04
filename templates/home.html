@@ -1,5 +1,10 @@
-{% extends 'base.html' %} {% block title %} Home | CineVerse {% endblock %}
-{%block content %}
+{% extends 'base.html' %}
+
+{% block title %}
+Home | CineVerse
+{% endblock %}
+
+{% block content %}
 
 <div class="container px-3">
   <div class="text-center mb-4">
@@ -13,9 +18,22 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">{{ movie.title }}</h5>
-          <p class="card-text text-muted">{{ movie.description|truncatechars:100 }}</p>
-          <p class="card-text"><small class="text-muted">Genre: {{ movie.genre.name }}</small></p>
-          <a href="{% url 'movie_app:movie_detail' movie.pk %}" class="btn btn-primary">View Details</a>
+
+          <p class="card-text text-muted">
+            {{ movie.description|truncatechars:100 }}
+          </p>
+
+          <p class="card-text">
+            <small class="text-muted">
+              Genre: {{ movie.genre.name }}
+            </small>
+          </p>
+
+          <!-- VIEW DETAILS BUTTON -->
+          <a href="{% url 'movie_app:movie_detail' movie.id %}" class="btn btn-primary">
+            View Details
+          </a>
+
         </div>
       </div>
     </div>
@@ -28,19 +46,21 @@
 
   {% if user.is_authenticated %}
   <div class="text-center mt-4">
-    <form
-      method="POST"
-      action="{% url 'user:logout_user' %}"
-      class="d-inline"
-    >
+    <form method="POST" action="{% url 'user:logout_user' %}" class="d-inline">
       {% csrf_token %}
-      <button type="submit" class="btn btn-outline-primary">Logout</button>
+      <button type="submit" class="btn btn-outline-primary">
+        Logout
+      </button>
     </form>
   </div>
   {% else %}
   <div class="text-center mt-4">
-    <a href="{% url 'user:register_user' %}" class="btn btn-primary me-2">Register</a>
-    <a href="{% url 'user:login_user' %}" class="btn btn-outline-primary">Login</a>
+    <a href="{% url 'user:register_user' %}" class="btn btn-primary me-2">
+      Register
+    </a>
+    <a href="{% url 'user:login_user' %}" class="btn btn-outline-primary">
+      Login
+    </a>
   </div>
   {% endif %}
 </div>

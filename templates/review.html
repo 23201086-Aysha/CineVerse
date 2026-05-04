@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reviews</title>
+</head>
+<body>
+
+<h1>{{ movie.title }} - Reviews</h1>
+
+<!-- Add Review Form -->
+{% if user.is_authenticated %}
+<form method="POST" action="{% url 'add_review' movie.id %}">
+    {% csrf_token %}
+    <input type="number" name="rating" placeholder="Rating (1-5)" required>
+    <br>
+    <textarea name="comment" placeholder="Write review"></textarea>
+    <br>
+    <label>
+        <input type="checkbox" name="is_spoiler"> Spoiler
+    </label>
+    <br>
+    <button type="submit">Submit Review</button>
+</form>
+{% else %}
+<p>Please login to add review</p>
+{% endif %}
+
+<hr>
+
+<!-- Show Reviews -->
+{% for review in reviews %}
+    <div>
+        <h3>{{ review.user.username }} ({{ review.rating }}/5)</h3>
+        <p>{{ review.comment }}</p>
+
+        {% if review.is_spoiler %}
+            <strong>Spoiler Alert!</strong>
+        {% endif %}
+
+        <!-- Delete -->
+        {% if review.user == user %}
+            <a href="{% url 'delete_review' review.id %}">Delete</a>
+        {% endif %}
+
+        <!-- Replies -->
+        <h4>Replies:</h4>
+        {% for reply in review.replies.all %}
+            <p>{{ reply.user.username }}: {{ reply.reply_text }}</p>
+        {% empty %}
+            <p>No replies yet.</p>
+        {% endfor %}
+
+        <!-- Add Reply -->
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'add_reply' review.id %}">
+            {% csrf_token %}
+            <input type="text" name="reply_text" placeholder="Write reply">
+            <button type="submit">Reply</button>
+        </form>
+        {% endif %}
+
+    </div>
+    <hr>
+{% endfor %}
+
+</body>
+</html>

@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Review, ReviewReply
 from movie_app.models import Movie
+from subscription.models import UserSubscription
 
 
 def movie_reviews(request, movie_id):
@@ -19,6 +21,20 @@ def movie_reviews(request, movie_id):
 def add_review(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
+    # Check subscription limits
+    user_subscription = UserSubscription.objects.filter(user=request.user, is_active=True).first()
+    has_unlimited_reviews = user_subscription and user_subscription.has_feature('unlimited_reviews')
+
+    if not has_unlimited_reviews:
+        # Free users limited to 5 reviews per month
+        from django.utils import timezone
+        from datetime import timedelta
+        month_ago = timezone.now() - timedelta(days=30)
+        review_count = Review.objects.filter(user=request.user, created_at__gte=month_ago).count()
+        if review_count >= 5:
+            messages.error(request, "Free users are limited to 5 reviews per month. Upgrade to Basic or Premium for unlimited reviews.")
+            return redirect('movie_reviews', movie_id=movie.id)
+
     if request.method == 'POST':
         rating = request.POST.get('rating')
         comment = request.POST.get('comment')
@@ -31,6 +47,7 @@ def add_review(request, movie_id):
             comment=comment,
             is_spoiler=is_spoiler
         )
+        messages.success(request, "Review added successfully!")
 
     return redirect('movie_reviews', movie_id=movie.id)
 

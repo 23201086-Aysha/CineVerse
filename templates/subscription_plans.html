@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscription Plans{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Subscription Plans</h1>
+
+    {% if user_subscription %}
+    <div class="alert alert-info">
+        <h5>Current Subscription: {{ user_subscription.plan.name }}</h5>
+        <p>Expires: {{ user_subscription.end_date|date:"M d, Y" }}</p>
+        <a href="{% url 'subscription:my_subscription' %}" class="btn btn-primary">Manage Subscription</a>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        {% for plan in plans %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title">{{ plan.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">৳{{ plan.price }}{% if plan.duration_days != 99999 %}/{{ plan.duration_days }} days{% endif %}</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for feature, value in plan.feature_list %}
+                        <li>
+                            {% if value == 'Yes' or value == 'Unlimited reviews' or value == '50 reviews' or value == '10 reviews' %}
+                            <i class="fas fa-check text-success"></i>
+                            {% else %}
+                            <i class="fas fa-times text-danger"></i>
+                            {% endif %}
+                            <strong>{{ feature }}:</strong> {{ value }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {% if plan.plan_type == 'free' %}
+                    <button class="btn btn-secondary w-100" disabled>Current Plan</button>
+                    {% else %}
+                    <a href="{% url 'subscription:subscribe' plan.id %}" class="btn btn-primary w-100">Subscribe</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if user.is_staff %}
+    <div class="mt-5">
+        <a href="{% url 'subscription:create_plan' %}" class="btn btn-success">Create New Plan</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

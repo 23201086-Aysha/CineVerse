@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}My Subscription{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">My Subscription</h1>
+
+    {% if subscription %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ subscription.plan.name }}</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Price:</strong> ৳{{ subscription.plan.price }}</p>
+            <p><strong>Start Date:</strong> {{ subscription.start_date|date:"M d, Y" }}</p>
+            <p><strong>End Date:</strong> {{ subscription.end_date|date:"M d, Y" }}</p>
+            <p><strong>Status:</strong>
+                {% if subscription.is_active and not subscription.is_expired %}
+                <span class="badge badge-success">Active</span>
+                {% elif subscription.is_expired %}
+                <span class="badge badge-warning">Expired</span>
+                {% else %}
+                <span class="badge badge-secondary">Inactive</span>
+                {% endif %}
+            </p>
+
+            <h6>Features:</h6>
+            <ul>
+                {% for feature, value in subscription.plan.feature_list %}
+                <li>
+                    {% if value == 'Yes' or value == 'Unlimited reviews' or value == '50 reviews' or value == '10 reviews' %}
+                    <i class="fas fa-check text-success"></i>
+                    {% else %}
+                    <i class="fas fa-times text-danger"></i>
+                    {% endif %}
+                    <strong>{{ feature }}:</strong> {{ value }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card-footer">
+            {% if subscription.is_active %}
+            <a href="{% url 'subscription:cancel_subscription' %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel your subscription?')">Cancel Subscription</a>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <h5>No Active Subscription</h5>
+        <p>You don't have an active subscription. <a href="{% url 'subscription:plans' %}">View Plans</a></p>
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'subscription:plans' %}" class="btn btn-primary">View All Plans</a>
+    </div>
+</div>
+{% endblock %}

@@ -90,6 +90,18 @@ def genre_list(request):
     genres = Genre.objects.all()
     return render(request, 'genre_list.html', {'genres': genres})
 
+# Genre wise movies
+@login_required
+def genre_movies(request, genre):
+
+    movies = Movie.objects.filter(
+        genre__iexact=genre
+    )
+
+    return render(request, 'genre_movies.html', {
+        'movies': movies,
+        'genre': genre
+    })
 
 #  All Reviews
 @login_required

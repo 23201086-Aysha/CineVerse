@@ -41,13 +41,15 @@ def add_movie(request):
         description = request.POST.get('description')
         release_date = request.POST.get('release_date')
         genre_id = request.POST.get('genre')
+        image = request.FILES.get('image')
 
         if title and genre_id:
             Movie.objects.create(
                 title=title,
                 description=description,
                 release_date=release_date,
-                genre_id=genre_id
+                genre_id=genre_id,
+                image=image
             )
             return redirect('movie_app:movie_list')
 
@@ -65,6 +67,10 @@ def edit_movie(request, pk):
         movie.description = request.POST.get('description')
         movie.release_date = request.POST.get('release_date')
         movie.genre_id = request.POST.get('genre')
+        image = request.FILES.get('image')
+
+        if image:
+            movie.image = image
 
         movie.save()
         return redirect('movie_app:movie_detail', pk=movie.pk)

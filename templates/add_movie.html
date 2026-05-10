@@ -21,7 +21,7 @@
       <div class="col-12 col-md-8 col-lg-6">
         <div class="card border-0 shadow-sm rounded-3 p-5">
           <!-- FORM -->
-          <form method="POST" novalidate>
+          <form method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
 
             <!-- Title Field -->
@@ -78,6 +78,19 @@
                 {% endfor %}
               </select>
               <small class="text-muted">Required field</small>
+            </div>
+
+            <!-- Image Upload Field -->
+            <div class="mb-4">
+              <label for="imageInput" class="form-label fw-semibold">Movie Image</label>
+              <input
+                type="file"
+                class="form-control rounded-2"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+              >
+              <small class="text-muted">Optional poster image for the movie card</small>
             </div>
 
             <!-- FORM ACTIONS -->

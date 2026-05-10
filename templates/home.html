@@ -6,63 +6,380 @@ Home | CineVerse
 
 {% block content %}
 
+<style>
+  .hero-section {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.12) 0%, rgba(111, 66, 193, 0.12) 100%);
+    border-radius: 2rem;
+    padding: 4rem 2rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    border: 1px solid rgba(13, 110, 253, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(13, 110, 253, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(111, 66, 193, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-hero-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 1rem;
+    font-size: 1.05rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.2);
+  }
+
+  .btn-hero-primary:hover {
+    background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-hero-secondary {
+    background: white;
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 1rem;
+    font-size: 1.05rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-hero-secondary:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(13, 110, 253, 0.3);
+  }
+
+  .featured-section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .featured-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+    border-radius: 2px;
+  }
+
+  .featured-movies {
+    margin-bottom: 4rem;
+  }
+
+  .home-movie-card {
+    border: none;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    background: white;
+    height: 100%;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(13, 110, 253, 0.15);
+  }
+
+  .movie-card-header {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e9e9e9 100%);
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d6efd;
+    font-size: 2.5rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .movie-card-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(13, 110, 253, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .home-movie-card:hover .movie-card-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+    color: white;
+  }
+
+  .movie-card-content {
+    padding: 1.75rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .movie-card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .movie-card-description {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+  }
+
+  .movie-card-genre {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.15) 0%, rgba(13, 110, 253, 0.08) 100%);
+    color: #0d6efd;
+    border-radius: 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(13, 110, 253, 0.2);
+  }
+
+  .btn-view-details {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    width: 100%;
+  }
+
+  .btn-view-details:hover {
+    background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(13, 110, 253, 0.3);
+  }
+
+  .empty-state-home {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, rgba(111, 66, 193, 0.05) 100%);
+    border-radius: 1.5rem;
+    border: 2px dashed rgba(13, 110, 253, 0.1);
+  }
+
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    opacity: 0.5;
+  }
+
+  .empty-state-title {
+    color: #0f172a;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  .empty-state-text {
+    color: #64748b;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .auth-section {
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .btn-logout {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    font-weight: 700;
+    padding: 0.85rem 2rem;
+    border-radius: 1rem;
+    transition: all 0.4s ease;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .btn-logout:hover {
+    background: #ef4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(239, 68, 68, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-section {
+      padding: 2.5rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .featured-section-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
 <div class="container px-3">
-  <div class="text-center mb-4">
-    <h1 class="h3 mb-4">Welcome to CineVerse</h1>
-    <p class="text-muted">Discover and explore amazing movies</p>
-  </div>
-
-  <div class="row g-4">
-    {% for movie in movies %}
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ movie.title }}</h5>
-
-          <p class="card-text text-muted">
-            {{ movie.description|truncatechars:100 }}
-          </p>
-
-          <p class="card-text">
-            <small class="text-muted">
-              Genre: {{ movie.genre.name }}
-            </small>
-          </p>
-
-          <!-- VIEW DETAILS BUTTON -->
-          <a href="{% url 'movie_app:movie_detail' movie.id %}" class="btn btn-primary">
-            View Details
-          </a>
-
-        </div>
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">🎬 Welcome to CineVerse</h1>
+      <p class="hero-subtitle">Discover, explore, and manage your favorite movies in one elegant place</p>
+      <div class="hero-cta">
+        {% if user.is_authenticated %}
+          <a href="{% url 'movie_app:movie_list' %}" class="btn-hero-primary">📽️ Browse All Movies</a>
+          <a href="{% url 'movie_app:add_movie' %}" class="btn-hero-secondary">✨ Add a Movie</a>
+        {% else %}
+          <a href="{% url 'user:register_user' %}" class="btn-hero-primary">🚀 Get Started</a>
+          <a href="{% url 'user:login_user' %}" class="btn-hero-secondary">Sign In</a>
+        {% endif %}
       </div>
     </div>
-    {% empty %}
-    <div class="col-12 text-center">
-      <p class="text-muted">No movies available yet.</p>
-    </div>
-    {% endfor %}
-  </div>
+  </section>
 
-  {% if user.is_authenticated %}
-  <div class="text-center mt-4">
-    <form method="POST" action="{% url 'user:logout_user' %}" class="d-inline">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-outline-primary">
-        Logout
-      </button>
-    </form>
-  </div>
+  <!-- FEATURED MOVIES SECTION -->
+  {% if movies %}
+  <h2 class="featured-section-title">Featured Movies</h2>
+  <section class="featured-movies">
+    <div class="row g-4">
+      {% for movie in movies %}
+      <div class="col-md-6 col-lg-4">
+        <div class="home-movie-card">
+          <div class="movie-card-header">🎥</div>
+          <div class="movie-card-content">
+            <h5 class="movie-card-title">{{ movie.title }}</h5>
+            <p class="movie-card-description">
+              {{ movie.description|truncatechars:120 }}
+            </p>
+            <span class="movie-card-genre">
+              {{ movie.genre.name }}
+            </span>
+            <a href="{% url 'movie_app:movie_detail' movie.id %}" class="btn-view-details">
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
   {% else %}
-  <div class="text-center mt-4">
-    <a href="{% url 'user:register_user' %}" class="btn btn-primary me-2">
-      Register
-    </a>
-    <a href="{% url 'user:login_user' %}" class="btn btn-outline-primary">
-      Login
-    </a>
+  <!-- EMPTY STATE -->
+  <div class="empty-state-home">
+    <div class="empty-state-icon">🎬</div>
+    <h3 class="empty-state-title">No Movies Available Yet</h3>
+    <p class="empty-state-text">Start building your movie collection now</p>
+    {% if user.is_authenticated %}
+      <a href="{% url 'movie_app:add_movie' %}" class="btn-hero-primary">✨ Add Your First Movie</a>
+    {% else %}
+      <a href="{% url 'user:register_user' %}" class="btn-hero-primary">🚀 Register to Get Started</a>
+    {% endif %}
   </div>
   {% endif %}
+
+  <!-- AUTH SECTION -->
+  <section class="auth-section">
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'user:logout_user' %}" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn-logout">
+        👋 Logout
+      </button>
+    </form>
+    {% else %}
+    <div class="hero-cta">
+      <a href="{% url 'user:register_user' %}" class="btn-hero-primary">Register</a>
+      <a href="{% url 'user:login_user' %}" class="btn-hero-secondary">Login</a>
+    </div>
+    {% endif %}
+  </section>
 </div>
 
 {% endblock %}

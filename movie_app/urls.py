@@ -30,6 +30,10 @@ urlpatterns = [
 
     path('genres/', views.genre_list, name='genre_list'),
     path('genres/<slug:genre>/',views.genre_movies,name='genre_movies'),
+    
+    path('moods/', views.mood_list, name='mood_list'),
+    path('moods/<slug:mood>/', views.mood_movies, name='mood_movies'),
+    
     path('reviews/', views.all_reviews, name='all_reviews'),
     path('my-reviews/', views.my_reviews, name='my_reviews'),
     path('add-review/', views.add_review, name='add_review'),

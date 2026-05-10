@@ -102,6 +102,27 @@
               </select>
             </div>
 
+            <!-- Mood Field -->
+            <div class="mb-5">
+              <label for="moodSelect" class="form-label fw-semibold">Mood</label>
+              <select 
+                class="form-select form-select-lg rounded-2" 
+                id="moodSelect"
+                name="mood"
+              >
+                <option value="">-- Select a Mood (Optional) --</option>
+                {% for m in moods %}
+                  <option 
+                    value="{{ m.id }}"
+                    {% if movie.mood and m.id == movie.mood.id %}selected{% endif %}
+                  >
+                    {{ m.name }}
+                  </option>
+                {% endfor %}
+              </select>
+              <small class="text-muted">Optional - choose a mood that fits the movie</small>
+            </div>
+
             <!-- FORM ACTIONS -->
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary btn-lg rounded-2">

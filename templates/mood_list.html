@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse by Mood - CineVerse{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- PAGE HEADER -->
+  <section class="page-header mb-5">
+    <div>
+      <a href="{% url 'movie_app:movie_list' %}" class="text-decoration-none text-muted small mb-3 d-inline-block">
+        ← Back to Movies
+      </a>
+      <h1 class="mb-2">Browse by Mood</h1>
+      <p class="text-muted">Discover movies based on the mood you're in</p>
+    </div>
+  </section>
+
+  <!-- MOODS GRID -->
+  <section class="moods-container">
+    {% if moods %}
+    <div class="row g-4">
+      {% for mood in moods %}
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{% url 'movie_app:mood_movies' mood.name %}" class="text-decoration-none">
+          <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden hover-shadow" style="transition: box-shadow 0.3s ease; cursor: pointer;">
+            <div class="card-body text-center p-5">
+              <h4 class="card-title mb-3">{{ mood.name }}</h4>
+              <p class="text-muted small mb-0">
+                Click to see movies with this mood
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- EMPTY STATE -->
+    <div class="text-center py-5">
+      <h4 class="text-muted mb-3">No moods available</h4>
+      <p class="text-muted mb-4">Moods will be available once they are added.</p>
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

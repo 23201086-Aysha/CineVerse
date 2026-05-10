@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Movie, Genre
+from .models import Movie, Genre, Mood
 from review.models import Review
 from watchlist.models import Watchlist
 
@@ -35,12 +35,14 @@ def movie_detail(request, pk):
 @login_required
 def add_movie(request):
     genres = Genre.objects.all()
+    moods = Mood.objects.all()
 
     if request.method == "POST":
         title = request.POST.get('title')
         description = request.POST.get('description')
         release_date = request.POST.get('release_date')
         genre_id = request.POST.get('genre')
+        mood_id = request.POST.get('mood')
         image = request.FILES.get('image')
 
         if title and genre_id:
@@ -49,11 +51,12 @@ def add_movie(request):
                 description=description,
                 release_date=release_date,
                 genre_id=genre_id,
+                mood_id=mood_id if mood_id else None,
                 image=image
             )
             return redirect('movie_app:movie_list')
 
-    return render(request, 'add_movie.html', {'genres': genres})
+    return render(request, 'add_movie.html', {'genres': genres, 'moods': moods})
 
 
 #  Edit Movie
@@ -61,12 +64,15 @@ def add_movie(request):
 def edit_movie(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     genres = Genre.objects.all()
+    moods = Mood.objects.all()
 
     if request.method == "POST":
         movie.title = request.POST.get('title')
         movie.description = request.POST.get('description')
         movie.release_date = request.POST.get('release_date')
         movie.genre_id = request.POST.get('genre')
+        mood_id = request.POST.get('mood')
+        movie.mood_id = mood_id if mood_id else None
         image = request.FILES.get('image')
 
         if image:
@@ -77,7 +83,8 @@ def edit_movie(request, pk):
 
     return render(request, 'edit_movie.html', {
         'movie': movie,
-        'genres': genres
+        'genres': genres,
+        'moods': moods
     })
 
 
@@ -110,6 +117,25 @@ def genre_movies(request, genre):
     return render(request, 'genre_movies.html', {
         'movies': movies,
         'genre': genre
+    })
+
+#  Mood List
+@login_required
+def mood_list(request):
+    moods = Mood.objects.all()
+    return render(request, 'mood_list.html', {'moods': moods})
+
+# Mood wise movies
+@login_required
+def mood_movies(request, mood):
+
+    movies = Movie.objects.filter(
+        mood__name__iexact=mood
+    )
+
+    return render(request, 'mood_movies.html', {
+        'movies': movies,
+        'mood': mood
     })
 
 #  All Reviews

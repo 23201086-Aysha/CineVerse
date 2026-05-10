@@ -67,6 +67,16 @@
                 </p>
               </div>
             </div>
+            {% if movie.mood %}
+            <div class="col-sm-6">
+              <div>
+                <label class="text-muted small fw-semibold d-block mb-2">Mood</label>
+                <a href="{% url 'movie_app:mood_movies' movie.mood.name %}" class="badge bg-success fs-6 text-white text-decoration-none">
+                  {{ movie.mood.name }}
+                </a>
+              </div>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>

@@ -71,9 +71,24 @@
         <div class="card border-0 shadow-sm rounded-3 p-4">
           <h5 class="mb-4">Quick Actions</h5>
           <div class="d-grid gap-2">
-            <button class="btn btn-primary" onclick="alert('Watchlist feature coming soon')">
-              Add to Watchlist
+            {% if user.is_authenticated %}
+            {% if in_watchlist %}
+            <button class="btn btn-secondary" disabled>
+              Already in Watchlist
             </button>
+            {% else %}
+            <form method="post" action="{% url 'watchlist:add_to_watchlist' %}">
+              {% csrf_token %}
+              <input type="hidden" name="movie_title" value="{{ movie.title }}">
+              <input type="hidden" name="movie_image" value="">
+              <button type="submit" class="btn btn-primary">
+                Add to Watchlist
+              </button>
+            </form>
+            {% endif %}
+            {% else %}
+            <a href="{% url 'user:login' %}" class="btn btn-primary">Login to Add to Watchlist</a>
+            {% endif %}
             <button class="btn btn-outline-secondary" onclick="alert('Share feature coming soon')">
               Share Movie
             </button>

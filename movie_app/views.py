@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Movie, Genre
 from review.models import Review
+from watchlist.models import Watchlist
 
 
 #  Home
@@ -22,9 +23,11 @@ def movie_list(request):
 def movie_detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
+    in_watchlist = Watchlist.objects.filter(user=request.user, movie_title=movie.title).exists()
     return render(request, 'movie_detail.html', {
         'movie': movie,
-        'reviews': reviews
+        'reviews': reviews,
+        'in_watchlist': in_watchlist
     })
 
 
